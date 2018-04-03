@@ -31,8 +31,11 @@ Install from PyPI_ ::
 
 Install from GitHub checkout::
 
-    cd tacconfig
-    python setup.py install
+    cd tacconfig && python setup.py install
+
+Usage
+=====
+
 
 
 Tests
