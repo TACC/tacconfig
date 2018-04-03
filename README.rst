@@ -30,14 +30,12 @@ Usage
     settings = config.read_config(place_list, config_filename, namespace,
                                   update, env, permissive)
 
-``place_list`` is the search path. Default: ``['/', cwd(), $HOME]``.
-``config_filename`` is the name of your application config [``config.yml``]
-``namespace`` is the prefix for override environment variables. Default: ``TACC``
-``update`` is a Boolean. Default: ``True``. Return a synthesis of all members of
-search path, otherwise, returns only the first encountered.
-``permissive`` is a Boolean. Default: ``True``. Ignore YAML errors.
-``env`` is a Boolean. Default: ``True``. Allow specially-named environment
-variables to override settings.
+* ``place_list`` is the search path. Default: ``['/', cwd(), $HOME]``.
+* ``config_filename`` is the name of your application config [``config.yml``]
+* ``namespace`` is the prefix for override environment variables. Default: ``TACC``
+* ``update`` is a Boolean. Default: ``True``. Return a synthesis of all members of search path, otherwise, returns only the first encountered.
+* ``permissive`` is a Boolean. Default: ``True``. Ignore YAML errors.
+* ``env`` is a Boolean. Default: ``True``. Allow specially-named environment variables to override settings.
 
 Example
 ^^^^^^^
@@ -64,11 +62,19 @@ Given two config files and an environment override as follows:
 
 .. code-block:: python
 
+    #/usr/bin/env python
+
+    from tacconfig import config
+
     settings = config.read_config()
 
-The value of ``settings.logs.level`` will be ``"WARNING"`` If one unsets the
-environment variable ``TACC_LOGS_LEVEL``, ``settings.logs.level`` will be
-``"DEBUG"``. If one deletes ``/home/tacobot/config.yml``, it will be ``INFO``.
+In the code block above, the value of ``settings.logs.level`` will be
+``"WARNING"``. If one unsets the environment variable ``TACC_LOGS_LEVEL``,
+``settings.logs.level`` will be ``"DEBUG"``. If one deletes or renames
+``/home/tacobot/config.yml``, ``settings.logs.level`` will be ``INFO``.
+
+Also note that, in keeping with this modules expected usage as a configuration
+management tool, ``settings`` can be navigated using dot notation.
 
 Tests
 =====
