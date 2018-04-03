@@ -1,0 +1,13 @@
+---
+logs:
+  level: "INFO"
+tacos:
+  - "Sausage and Egg"
+  - "Chorizo, Avacado, and Bacon"
+  - "Potato and Egg"
+filter:
+  strategy: "all"
+  case_sensitive: False
+  rules:
+  - "contains(EventType, 's3:ObjectCreated:')"
+  - "ends_with(Key, 'manifest.json')"

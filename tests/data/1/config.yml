@@ -1,0 +1,9 @@
+---
+logs:
+  level: "DEBUG"
+filter:
+  strategy: "all"
+  case_sensitive: True
+  rules:
+  - "contains(EventType, 's3:ObjectCreated:')"
+  - "ends_with(Key, 'manifest.json')"
