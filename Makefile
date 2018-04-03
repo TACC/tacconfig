@@ -15,9 +15,9 @@ install:
 	python setup.py install
 
 clean:
-	rm -rf config/tests/*pyc config/*pyc config.egg-info build/ .cache config/tests/__pycache__ .pytest_cache && \
-	cd docs && \
-	make clean
+	rm -rf tacconfig/tests/*pyc tacconfig/*pyc tacconfig.egg-info \
+	build/ .cache tacconfig/tests/__pycache__ .pytest_cache \
+	.hypothesis .tox dist
 
 dist-clean: clean
 	rm -rf dist

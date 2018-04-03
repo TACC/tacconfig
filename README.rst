@@ -14,7 +14,7 @@ TACConfig
 .. image:: https://img.shields.io/pypi/l/Django.svg
     :target: https://raw.githubusercontent.com/TACC/tacconfig/master/LICENSE
 
-**Multiuser-aware key/value store built using the Agave metadata API**
+**Hierarchical, YAML-based configuration for containers, web apps, and web services**
 
 - Documentation: https://tacconfig.readthedocs.io/en/latest/
 - GitHub: https://github.com/TACC/tacconfig
@@ -75,6 +75,4 @@ Tests
 
 Tests are implemented using tox_. To run them, just type ``tox``
 
-.. _PyPI: https://pypi.python.org/pypi/tacconfig
 .. _tox: https://tox.readthedocs.io/en/latest
-
