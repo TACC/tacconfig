@@ -31,6 +31,17 @@ def test_invalid_yml():
     assert settings == {}
 
 
+def test_invalid_filetype():
+    '''test that filetype is among the ones accepted'''
+    testdata = os.path.join(HERE, 'data', '1')
+    fname = 'config.yml'
+    with pytest.raises(AssertionError):
+        config.read_config(places_list=[testdata],
+                           config_filename=fname,
+                           permissive=False,
+                           filetype="JSON")
+
+
 def test_specified_load_order():
     '''test that config later in list takes precedence'''
     testdata = []
