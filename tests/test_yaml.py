@@ -81,3 +81,12 @@ def test_environment_override():
                                   permissive=True,
                                   env=False)
     assert settings['logs']['level'] == 'INFO', 'Ignore env failed'
+
+
+def test_get_env_config_vals():
+    '''ensure we can get a list of candidate redact values from env'''
+    os.environ['TEST_SECTION1'] = "abc"
+    os.environ['TEST_SECTION2_KEY1'] = "123"
+    os.environ['NOT_SECTION2_KEY1'] = "def"
+    env_vals = config.get_env_config_vals(namespace='TEST')
+    assert set(env_vals) == set(['abc', '123'])

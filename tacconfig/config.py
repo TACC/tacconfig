@@ -23,7 +23,7 @@ PWD = os.getcwd()
 HOME = os.path.expanduser("~")
 ROOT = '/'
 PLACES = [ROOT, INSTALL, HOME, PWD]
-ENVSPACE = '''TACC'''
+ENVSPACE = 'TACC'
 KNOWN_TYPES = ('YAML')
 
 
@@ -77,6 +77,17 @@ def variablize(keys=[], namespace=ENVSPACE):
     keylist = [namespace]
     keylist.extend(keys)
     return '_'.join(keylist).upper()
+
+
+def get_env_config_vals(namespace=ENVSPACE):
+    '''Returns list of config values specified by env'''
+    values = []
+    if namespace is None:
+        return values
+    for n in filter(lambda k: k[0].startswith(
+            namespace), os.environ.items()):
+        values.append(n[1])
+    return values
 
 
 def read_environment(config, namespace=ENVSPACE, permissive=True):
