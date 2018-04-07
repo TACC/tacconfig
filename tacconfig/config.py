@@ -27,7 +27,18 @@ ENVSPACE = '''TACC'''
 
 
 def yaml_to_dict(filename, permissive=True):
+    """
+    Safe loader for YAML files
 
+    Positional arguments:
+    filename - str - path to YAML file
+
+    Keyword arguments:
+    permissive - boolean - ignore load or parse errors
+
+    Returns:
+    An AttrDict
+    """
     loaded = {}
     try:
         with open(filename, "r") as conf:
@@ -67,9 +78,53 @@ def variablize(keys=[], namespace=ENVSPACE):
     return '_'.join(keylist).upper()
 
 
-def read_config(places_list=PLACES, config_filename=CONFIG,
-                namespace=ENVSPACE, update=True, env=True, permissive=True):
+def read_environment(config, namespace=ENVSPACE, permissive=True):
+    """
+    Read in environment variable overrides
 
+    Positional parameters:
+    config - dict - a shallow copy of the main config object
+
+    Keyword parameters:
+    namespace - str - environment variable namespace. default 'TACC_'
+    permissive - boolean - ignore loading or parsing errors
+
+    Returns:
+    An AttrDict configuration object
+    """
+    this_config = config.copy()
+    for level1 in config.keys():
+        if (config.get(level1) is None) or (type(config.get(level1)) is str):
+            env_var = "_".join([namespace, level1]).upper()
+            if os.environ.get(env_var, None) is not None:
+                this_config[level1] = os.environ.get(env_var)
+        elif type(config[level1]) is dict:
+            for level2 in config[level1].keys():
+                if (config[level1][level2] is None) or (type(config[level1][level2])) is str:
+                    env_var = '_'.join([namespace, level1, level2]).upper()
+                    if os.environ.get(env_var, None) is not None:
+                        this_config[level1][level2] = os.environ.get(env_var)
+    return this_config
+
+
+def read_config(config_filename=CONFIG, places_list=PLACES,
+                namespace=ENVSPACE, update=True, env=True, permissive=True):
+    """
+    Read in config file(s) and return an AttrDict
+
+    Positional arguments:
+    None
+
+    Keyword arguments:
+    config_filename - str - config file name. default: config.yml
+    places_list - list - search path for config files. default: [/, $HOME, pwd]
+    namespace - str - environment variable namespace. default 'TACC_'
+    env - boolean - allow environment variable override. default: True
+    permissive - boolean - ignore errors in YAML loading. default: True
+
+    Returns:
+    An AttrDict configuration object
+    """
     config = AttrDict()
     for p in places_list:
         fname = os.path.join(p, config_filename)
@@ -80,22 +135,7 @@ def read_config(places_list=PLACES, config_filename=CONFIG,
                 break
 
     if env is True:
-        this_config = config.copy()
-        for level1 in config.keys():
-            if (config.get(level1) is None) or (type(config.get(level1)) is str):
-                env_var = "_".join([namespace, level1]).upper()
-                if os.environ.get(env_var, None) is not None:
-                    this_config[level1] = os.environ.get(env_var)
-            elif type(config[level1]) is dict:
-                for level2 in config[level1].keys():
-                    if (config[level1][level2] is None) or (type(config[level1][level2])) is str:
-                        env_var = '_'.join([namespace, level1, level2]).upper()
-                        if os.environ.get(env_var, None) is not None:
-                            this_config[level1][level2] = os.environ.get(env_var)
-        if config != this_config:
-            config.update(this_config)
+        config_env = read_environment(config, namespace)
+        config.update(config_env)
 
     return config
-
-
-settings = read_config()

@@ -10,7 +10,7 @@ HERE = os.path.dirname(os.path.abspath(__file__))
 
 
 def get_version():
-    version = '0.5.0'
+    version = '0.5.1'
     f = open(os.path.join(HERE, 'VERSION'), 'r')
     version = f.readline()
     f.close
@@ -26,6 +26,7 @@ setup(
     author_email='vaughn@tacc.utexas.edu',
     url='https://github.com/TACC/tacconfig',
     package_dir={'tacc-config': 'tacconfig'},
+    data_files=[('', ['VERSION', 'requirements.txt'])],
     install_requires=['attrdict==2.0.0', 'PyYAML==3.12'],
     license="BSD",
     keywords='',
