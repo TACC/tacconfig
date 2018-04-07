@@ -24,6 +24,7 @@ HOME = os.path.expanduser("~")
 ROOT = '/'
 PLACES = [ROOT, INSTALL, HOME, PWD]
 ENVSPACE = '''TACC'''
+KNOWN_TYPES = ('YAML')
 
 
 def yaml_to_dict(filename, permissive=True):
@@ -107,7 +108,7 @@ def read_environment(config, namespace=ENVSPACE, permissive=True):
     return this_config
 
 
-def read_config(config_filename=CONFIG, places_list=PLACES,
+def read_config(config_filename=CONFIG, places_list=PLACES, filetype='YAML',
                 namespace=ENVSPACE, update=True, env=True, permissive=True):
     """
     Read in config file(s) and return an AttrDict
@@ -125,6 +126,8 @@ def read_config(config_filename=CONFIG, places_list=PLACES,
     Returns:
     An AttrDict configuration object
     """
+
+    assert filetype in KNOWN_TYPES, "{} is not a supported config file type."
     config = AttrDict()
     for p in places_list:
         fname = os.path.join(p, config_filename)
