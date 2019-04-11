@@ -63,7 +63,7 @@ def yaml_to_dict(filename, permissive=True):
     try:
         attr_loaded = AttrDict(loaded)
         return attr_loaded
-    except Exception as e:
+    except Exception:
         return AttrDict({})
         pass
 
