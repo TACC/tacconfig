@@ -153,3 +153,30 @@ def read_config(config_filename=CONFIG, places_list=PLACES, filetype='YAML',
         config.update(config_env)
 
     return config
+
+def get_env_config_varnames(config, namespace=ENVSPACE, permissive=True):
+    """
+    Return the list of environment variable names for a given config
+
+    Positional arguments:
+    config - dict - a config object
+
+    Keyword arguments:
+    namespace - str - environment variable namespace. default 'TACC_'
+    permissive - boolean - ignore errors in YAML loading. default: True
+
+    Returns:
+    An AttrDict configuration object
+    """    
+    vars = []
+    for level1 in config.keys():
+        if (config.get(level1) is None) or (type(config.get(level1)) is str):
+            env_var = "_".join([namespace, level1]).upper()
+            vars.append(env_var)
+        elif type(config[level1]) is dict:
+            for level2 in config[level1].keys():
+                if (config[level1][level2] is None) or (type(config[level1][level2])) is str:
+                    env_var = '_'.join([namespace, level1, level2]).upper()
+                    vars.append(env_var)
+    sorted(vars)
+    return vars
